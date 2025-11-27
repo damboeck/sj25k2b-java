@@ -7,9 +7,9 @@ public class Dreieck2 {
      * Diese Methode soll ein Dreieck der angegebenen Größe in der Konsole ausgeben.
      * Es sollen x als Zeichen verwendet werden.
      * Beispiel für size = 4:
-     * x
-     * xx
-     * xxx
+     *    x
+     *   xx
+     *  xxx
      * xxxx
      * @param size Die Größe des Dreiecks (Anzahl der Zeilen)
      */
