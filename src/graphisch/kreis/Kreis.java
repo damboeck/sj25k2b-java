@@ -70,6 +70,16 @@ public class Kreis {
         return Math.sqrt((p.x-mx)*(p.x-mx)+(p.y-my)*(p.y-my));
     }
 
+    /** verschiebe den Kreis um einen Offset */
+    public void move(int x, int y) {
+        mx += x;
+        my += y;
+    }
+
+    public void setRadiusFromPoint(Point p) {
+        r = Math.sqrt(Math.pow(p.x-mx,2)+Math.pow(p.y-my,2));
+    }
+
     public double getR() {
         return r;
     }

@@ -6,16 +6,21 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.Vector;
 
 public class MainKreis extends MyFrame {
 
     private EDITMODE editmode = EDITMODE.NORMAL;
     private Point    lastMC; // Letzte Mausposition (Mouse-Cursor)
-    private Kreis k;
+    private Vector<Kreis> kreise;
+    private Kreis         selectedKreis;
 
     public MainKreis() {
         super("Kreis", 1000, 800);
-        k = new Kreis(100,500,400,Color.red,Color.magenta,5);
+        Kreis k = new Kreis(100,500,400,Color.red,Color.magenta,5);
+        kreise = new Vector<>();
+        kreise.add(k);
+        kreise.add(new Kreis(60,300,120,Color.blue,null,15));
         setVisible(true);
     }
 
@@ -26,7 +31,8 @@ public class MainKreis extends MyFrame {
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        k.paint(g2);
+        for(Kreis k : kreise)
+            k.paint(g2);
     }
 
     @Override
@@ -34,12 +40,15 @@ public class MainKreis extends MyFrame {
         switch (e.getButton()) {
             case MouseEvent.BUTTON1: // Linke Maustaste
                 Point mc = e.getPoint();
-                if (k.onElement(mc)){
-                    lastMC = mc;
-                    if ((e.getModifiersEx()&MouseEvent.SHIFT_DOWN_MASK)!=0) {
-                        editmode = EDITMODE.RESIZE;
-                    } else {
-                        editmode = EDITMODE.MOVE;
+                for (Kreis k : kreise) {
+                    if (k.onElement(mc)) {
+                        selectedKreis = k;
+                        lastMC = mc;
+                        if ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0) {
+                            editmode = EDITMODE.RESIZE;
+                        } else {
+                            editmode = EDITMODE.MOVE;
+                        }
                     }
                 }
                 break;
@@ -58,17 +67,25 @@ public class MainKreis extends MyFrame {
             case MouseEvent.BUTTON1: // Linke Maustaste
                 Point mc = e.getPoint();
                 switch (editmode) {
-                case MOVE:
-                    // Verschiebung beenden
-                    k.move(mc.x-lastMC.x,mc.y-lastMC.y);
-                    repaint();
-                    break;
-                case RESIZE:
-                    // Größenänderung beenden
-                    k.setRadiusFromPoint(mc);
-                    repaint();
-                    break;
+                case MOVE, RESIZE -> editmode = EDITMODE.NORMAL;
                 }
+                break;
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Point mc = e.getPoint();
+        switch (editmode) {
+            case MOVE:
+                selectedKreis.move(mc.x-lastMC.x,mc.y-lastMC.y);
+                lastMC = mc;
+                repaint();
+                break;
+            case RESIZE:
+                selectedKreis.setRadiusFromPoint(mc);
+                lastMC = mc;
+                repaint();
                 break;
         }
     }
