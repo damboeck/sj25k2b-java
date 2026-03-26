@@ -39,6 +39,7 @@ public class MainKreis extends MyFrame {
     public void mousePressed(MouseEvent e) {
         switch (e.getButton()) {
             case MouseEvent.BUTTON1: // Linke Maustaste
+                selectedKreis=null;
                 Point mc = e.getPoint();
                 for (Kreis k : kreise) {
                     if (k.onElement(mc)) {
@@ -50,6 +51,13 @@ public class MainKreis extends MyFrame {
                             editmode = EDITMODE.MOVE;
                         }
                     }
+                }
+                if (selectedKreis == null) {
+                    Kreis k = new Kreis(0,mc.getX(),mc.getY(),Color.blue,null,5);
+                    kreise.add(k);
+                    selectedKreis = k;
+                    editmode = EDITMODE.RESIZE;
+                    lastMC = mc;
                 }
                 break;
             case MouseEvent.BUTTON2: // Mittlere Maustaste
