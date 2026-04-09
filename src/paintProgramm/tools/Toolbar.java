@@ -14,7 +14,7 @@ public class Toolbar implements Paintable {
 
     private WindowInfo windowInfo;
     private POSITION position;
-    int toolSize = 40;
+    int toolSize = 60;
     private Vector<Tool> tools = new Vector<Tool>();
 
     private Color lineColor = Color.black;
@@ -24,8 +24,8 @@ public class Toolbar implements Paintable {
     public Toolbar(POSITION position, WindowInfo windowInfo) {
         this.position = position;
         this.windowInfo = windowInfo;
-        tools.add(new Tool(TOOLENUM.SELECT,this));
-        tools.add(new Tool(TOOLENUM.LINE,this));
+        for (TOOLENUM t: TOOLENUM.values())
+            tools.add(new Tool(t,this));
     }
 
     @Override
