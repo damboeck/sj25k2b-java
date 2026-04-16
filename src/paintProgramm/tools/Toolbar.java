@@ -3,6 +3,7 @@ package paintProgramm.tools;
 import paintProgramm.POSITION;
 import paintProgramm.Paintable;
 import paintProgramm.WindowInfo;
+import paintProgramm.elements.Zweipunkt;
 
 import java.awt.*;
 import java.util.Vector;
@@ -12,7 +13,7 @@ import java.util.Vector;
  */
 public class Toolbar implements Paintable {
 
-    private WindowInfo windowInfo;
+    WindowInfo windowInfo;
     private POSITION position;
     int toolSize = 60;
     private Vector<Tool> tools = new Vector<Tool>();
@@ -20,6 +21,7 @@ public class Toolbar implements Paintable {
     private Color lineColor = Color.black;
     private int thickness   = 3;
 
+    Zweipunkt actualZweipunkt=null;
 
     public Toolbar(POSITION position, WindowInfo windowInfo) {
         this.position = position;
@@ -30,6 +32,12 @@ public class Toolbar implements Paintable {
 
     @Override
     public void paint(Graphics2D g) {
+        // gerade aktiv zu zeichnendes Objekt zeichnen
+        if (actualZweipunkt!=null) {
+            actualZweipunkt.paint(g);
+        }
+
+        // Toolbar zeichen
         g.setColor(Color.GRAY);
         switch (position) {
             case LEFT: default :
@@ -69,6 +77,11 @@ public class Toolbar implements Paintable {
             Tool tool     = tools.get(i);
             tool.selected = false;
         }
+    }
+
+    public Tool getSelectedTool() {
+        for (Tool t:tools) if (t.selected) return t;
+        return null;
     }
 
 }

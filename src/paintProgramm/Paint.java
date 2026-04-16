@@ -2,6 +2,7 @@ package paintProgramm;
 
 import graphisch.MyFrame;
 import paintProgramm.elements.Line;
+import paintProgramm.tools.Tool;
 import paintProgramm.tools.Toolbar;
 
 import java.awt.*;
@@ -23,7 +24,7 @@ public class Paint extends MyFrame implements WindowInfo {
     public Paint() {
         super("Paint",1200,900);
         toolbar = new Toolbar(POSITION.LEFT,this);
-        elements.add(new Line(new Point(10,10), new Point(400,400),Color.red,4));
+        //elements.add(new Line(new Point(10,10), new Point(400,400),Color.red,4));
         setVisible(true);
     }
 
@@ -37,6 +38,7 @@ public class Paint extends MyFrame implements WindowInfo {
     public int getHeight() {
         return super.getHeight()-FRAME_BOTTOM-FRAME_TOP;
     }
+    public Vector<Paintable> getElements() { return elements; }
 
     @Override
     public void paint(Graphics g) {
@@ -55,13 +57,41 @@ public class Paint extends MyFrame implements WindowInfo {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        Point mc = transformMouseCursor(e.getPoint());
         if (e.getButton() == MouseEvent.BUTTON1) {
-            if (toolbar.leftMousePressed(transformMouseCursor(e.getPoint()))) {
+            if (toolbar.leftMousePressed(mc)) {
                 repaint();
                 return;
             }
         }
         // Klicks in die Zeichenfläche verarbeiten
+        Tool tool = toolbar.getSelectedTool();
+        if (tool != null && e.getButton() == MouseEvent.BUTTON1) {
+            tool.leftMousePressed(mc);
+            repaint();
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        Point mc = transformMouseCursor(e.getPoint());
+        // Klicks in die Zeichenfläche verarbeiten
+        Tool tool = toolbar.getSelectedTool();
+        if (tool != null && e.getButton() == MouseEvent.BUTTON1) {
+            tool.leftMouseReleased(mc);
+            repaint();
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Point mc = transformMouseCursor(e.getPoint());
+        // Klicks in die Zeichenfläche verarbeiten
+        Tool tool = toolbar.getSelectedTool();
+        if (tool != null) {
+            tool.mouseMoved(mc);
+            repaint();
+        }
     }
 
     @Override
