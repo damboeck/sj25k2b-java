@@ -1,9 +1,11 @@
 package paintProgramm.tools;
 
+import paintProgramm.Selectable;
 import paintProgramm.elements.Line;
 import paintProgramm.elements.Rectangle;
 
 import java.awt.*;
+import java.util.Vector;
 
 /** Elemente der Toolbar */
 public class Tool {
@@ -66,7 +68,7 @@ public class Tool {
      * @param x MouseCursor im Tool von 0..100
      * @param y MouseCursor im Tool von 0..100
      */
-    public void leftMousePressed(double x, double y) {
+    public void leftMousePressedToolbar(double x, double y) {
         switch(type) {
             case LINE: case SELECT: case RECTANGLE: case OVAL: case FREEHAND:
                 toolbar.deSelectAll();
@@ -79,13 +81,22 @@ public class Tool {
      * verarbeitet einen Klick in die Zeichenebenen mit dem Tool
      * @param mc MouseCursor
      */
-    public void leftMousePressed(Point mc) {
+    public void leftMousePressedZeichenebene(Point mc) {
         switch(type) {
             case LINE:
                 toolbar.actualZweipunkt = new Line(mc,Color.red,3);
                 break;
             case RECTANGLE:
                 toolbar.actualZweipunkt = new Rectangle(mc,Color.red,Color.blue,3);
+                break;
+            case SELECT:
+                Vector<Selectable> selectables = toolbar.windowInfo.getSelectableElements();
+                Selectable s = null;
+                for (Selectable selectable : selectables) {
+                    selectable.setSelected(false);
+                    if (selectable.select(mc)) s = selectable;
+                }
+                if (s!=null) s.setSelected(true);
                 break;
         }
     }

@@ -63,7 +63,7 @@ public class Toolbar implements Paintable {
                         Tool tool = tools.get(i);
                         double tx = ((double)p.x)/toolSize*100.;
                         double ty = ((double)(p.y-i*toolSize))/toolSize*100.;
-                        tool.leftMousePressed(tx,ty);
+                        tool.leftMousePressedToolbar(tx,ty);
                     }
 
                     return true;

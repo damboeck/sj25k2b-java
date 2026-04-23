@@ -1,5 +1,8 @@
 package paintProgramm.elements;
 
+import org.w3c.dom.css.Rect;
+import paintProgramm.mathe.PRect;
+
 import java.awt.*;
 
 public class Rectangle extends ZPF{
@@ -13,11 +16,19 @@ public class Rectangle extends ZPF{
 
     @Override
     public void paint(Graphics2D g) {
+        PRect r = new PRect(p1,p2);
         g.setColor(fillColor);
-        g.fillRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
+        if (selected) g.setColor(Color.gray); // Auswahlfarbe
+        g.fillRect(r.x1, r.y1, r.w, r.h);
         g.setColor(lineColor);
         g.setStroke(new BasicStroke(thickness));
-        g.drawRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
+        g.drawRect(r.x1, r.y1, r.w, r.h);
+    }
+
+    @Override
+    public boolean select(Point mc) {
+        PRect r = new PRect(p1,p2);
+        return (r.x1<=mc.x && r.x2>=mc.x && r.y1<=mc.y && r.y2>=mc.y);
     }
 
 }

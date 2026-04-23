@@ -1,14 +1,16 @@
 package paintProgramm.elements;
 
 import paintProgramm.Paintable;
+import paintProgramm.Selectable;
 
 import java.awt.*;
 
-public abstract class Zweipunkt implements Paintable {
+public abstract class Zweipunkt implements Paintable, Selectable {
 
-    protected Color lineColor;
-    protected int   thickness;
-    protected Point p1,p2;
+    protected Color   lineColor;
+    protected int     thickness;
+    protected Point   p1,p2;
+    protected boolean selected = false;
 
     public Zweipunkt(Point p1, Point p2, Color lineColor, int thickness) {
         this.p1  = p1;
@@ -47,5 +49,15 @@ public abstract class Zweipunkt implements Paintable {
 
     public void setP2(Point p2) {
         this.p2 = p2;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

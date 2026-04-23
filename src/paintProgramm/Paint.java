@@ -1,7 +1,6 @@
 package paintProgramm;
 
 import graphisch.MyFrame;
-import paintProgramm.elements.Line;
 import paintProgramm.tools.Tool;
 import paintProgramm.tools.Toolbar;
 
@@ -41,6 +40,15 @@ public class Paint extends MyFrame implements WindowInfo {
     public Vector<Paintable> getElements() { return elements; }
 
     @Override
+    public Vector<Selectable> getSelectableElements() {
+        Vector<Selectable> selectables = new Vector<>();
+        for (Paintable paintable : elements)
+            if (paintable instanceof Selectable)
+                selectables.add((Selectable) paintable);
+        return selectables;
+    }
+
+    @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.translate(FRAME_LEFT,FRAME_TOP);
@@ -67,7 +75,7 @@ public class Paint extends MyFrame implements WindowInfo {
         // Klicks in die Zeichenfläche verarbeiten
         Tool tool = toolbar.getSelectedTool();
         if (tool != null && e.getButton() == MouseEvent.BUTTON1) {
-            tool.leftMousePressed(mc);
+            tool.leftMousePressedZeichenebene(mc);
             repaint();
         }
     }

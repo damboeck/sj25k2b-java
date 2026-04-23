@@ -7,7 +7,7 @@ public interface WindowInfo {
 
     int getWidth();
     int getHeight();
-    Vector<Paintable> getElements();
-
+    Vector<Paintable>  getElements();
+    Vector<Selectable> getSelectableElements();
 
 }
