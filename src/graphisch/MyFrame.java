@@ -24,6 +24,17 @@ public abstract class MyFrame extends Frame
         this.addMouseWheelListener(this);
     }
 
+    /**
+     * zeichnet das Fenster in einem Frame-Buffer neu
+     */
+    @Override
+    public void update(Graphics g) {
+        Image dbImage;
+        dbImage     = this.createImage(this.getSize().width,this.getSize().height);
+        paint(dbImage.getGraphics());
+        g.drawImage(dbImage,0,0, this);
+    }
+
     @Override
     public abstract void paint(Graphics g);
 
