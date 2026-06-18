@@ -8,7 +8,7 @@ public class Ball implements Paintable, Animateable {
 
     private static final double GUMMI_REFLEX = 0.6;
     private static final double GUMMI_BEW    = 0.99;
-    private static final double REIBUNG      = 0.998;
+    private static final double REIBUNG      = 0.999;
     private static final double HAFTGRENZE   = 0.02;
 
     private Color c;
@@ -87,7 +87,23 @@ public class Ball implements Paintable, Animateable {
      * @param b anderer Ball
      */
     public void collision(Ball b) {
-
+        Vect2D d = pos.sub(b.pos);
+        double abstand = d.abs();
+        if (abstand<r+b.r) {
+            // Kollision
+            Vect2D n = d.eins();
+            Vect2D vRel = v.sub(b.v);
+            double vRelN = vRel.in(n);
+            if (vRelN<0) {
+                // nur wenn die Bälle aufeinander zu bewegen
+                double m1 = r*r;
+                double m2 = b.r*b.r;
+                double mSum = m1+m2;
+                double impulse = 2*vRelN/(mSum);
+                v = v.sub(n.mult(impulse*m2*GUMMI_REFLEX));
+                b.v = b.v.add(n.mult(impulse*m1*GUMMI_REFLEX));
+            }
+        }
     }
 
 }

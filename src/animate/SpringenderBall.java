@@ -22,7 +22,7 @@ public class SpringenderBall extends MyFrameAnimate {
     public SpringenderBall(String title, int width, int height) {
         super(title, width, height);
         animateables.add(new Ball(Color.red, 20, 100,300,0.1,-0.3,0,GRAVITY));
-        animateables.add(new Ball(Color.blue, 20, 400,400,-0.1,-0.1,0,GRAVITY));
+        animateables.add(new Ball(Color.blue, 20, 400,400,-0.1,-0.13,0,GRAVITY));
         fixables.add(new FixHLine(20));
         fixables.add(new FixHLine(height-5));
         fixables.add(new FixVLine(5));
